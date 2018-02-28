@@ -386,7 +386,7 @@ func parseTitle(t html.Token) metaTag {
 }
 
 func (p *Parser) analyzeImages(baseURL *url.URL, tags []imgTag) []Image {
-	ch := make(chan parsedImage)
+	ch := make(chan parsedImage, len(tags))
 	returned := []Image{}
 	numFound := 0
 
@@ -404,6 +404,7 @@ func (p *Parser) analyzeImages(baseURL *url.URL, tags []imgTag) []Image {
 				img, err := parseImgFromData(tag)
 				if err != nil {
 					ch <- parsedImage{}
+					return
 				}
 
 				ch <- img
